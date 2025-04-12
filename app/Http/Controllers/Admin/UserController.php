@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 // use Mail;
 use App\Mail\VerifyAccount;
+use App\Models\Category;
 use Carbon\Carbon;
 
 class UserController extends Controller
@@ -178,8 +179,14 @@ class UserController extends Controller
     public function post_login(Request $request){
         
         if(Auth::attempt(['email'=>$request->email, 'password'=>$request->password,])){
-            toastr()->success('Successful','Notification');
-            return redirect()->route('home');           
+            if(Auth::user()->email_verified_at){
+                toastr()->success('Successful','Notification');
+                return redirect()->route('home');
+            }else{
+                Auth::logout();
+                return redirect()->route('login')->with('info','Your account was not verified! Please check your eamail.');
+            }
+                       
         }else{
             toastr()->error('Failed to login','Warning');
             return redirect()->back();         
@@ -188,27 +195,34 @@ class UserController extends Controller
     public function profile(){
         // $user = User::find($id);
         
-        if(Auth::check()){
-            if(Auth::user()->role == 'employee'){
-                $applications = Application::where('uid', Auth::user()->id)->get();
-            }else{
-                $applications = Application::where('ucid', Auth::user()->id)->get();
-            }
+        // if(Auth::check()){
+        //     if(Auth::user()->role == 'employee'){
+        //         $applications = Application::where('uid', Auth::user()->id)->get();
+        //     }else{
+        //         $applications = Application::where('ucid', Auth::user()->id)->get();
+        //     }
 
-            if(Auth::user()->role == 'company' || Auth::user()->role == 'admin'){
-                $applications = Application::where('ucid', Auth::user()->id)->get();
-                $jobs = Job::where('ucid', Auth::user()->id)->get();
-                return view('fe.profile.profileIndex',compact('applications','jobs'));
-            }else{
-                $applications = Application::where('uid', Auth::user()->id)->get();
-                // dd($jobs);
-                $cv = Cv::find(Auth::user()->cv_id);
-                // dd($cv);
-                return view('fe.profile.profileIndex',compact('cv','applications'));
-            }
+        //     if(Auth::user()->role == 'company' || Auth::user()->role == 'admin'){
+        //         $applications = Application::where('ucid', Auth::user()->id)->get();
+        //         $jobs = Job::where('ucid', Auth::user()->id)->get();
+        //         return view('fe.profile.profileIndex',compact('applications','jobs'));
+        //     }else{
+        //         $applications = Application::where('uid', Auth::user()->id)->get();
+        //         // dd($jobs);
+        //         $cv = Cv::find(Auth::user()->cv_id);
+        //         // dd($cv);
+        //         return view('fe.profile.profileIndex',compact('cv','applications'));
+        //     }
+        // }else{
+        //     return redirect(route('login'));
+        // }
+        if(Auth::check()){
+            return view('fe.profile.profileIndex');
+
         }else{
-            return redirect(route('login'));
+            return redirect()->route('login');
         }    
+
     }
     public function logout(){
         Auth::logout();
@@ -228,7 +242,7 @@ class UserController extends Controller
                     $extension = $avatar->getClientOriginalExtension();
                     $randomNumber = str_pad(rand(0, 99999), 5, '0', STR_PAD_LEFT);
                     $newFileName = $originalName . '_' . $randomNumber . '.' . $extension;
-                    // dd($newFileName);
+                    
                     // Thay đổi địa chỉ lưu ảnh
                     $destinationPath = public_path('upload/images'); // Đường dẫn đến thư mục bạn muốn lưu
 
@@ -265,6 +279,51 @@ class UserController extends Controller
             toastr()->error('Failed to update2','Error');
             return redirect()->back();
         }
+    }
+    public function account() {
+        $user = Auth::user();
+        return view('fe.profile.account',compact('user'))->render();
+    }
+    public function jobCreate() {
+        $categories = Category::all();
+        return view('fe.profile.jobCreate',compact('categories'));
+    }
+    public function jobStore(Request $request){
+        dd($request->all());
+        try{
+            Job::create($request->all());
+            toastr()->success('Successful','Congrats');
+            return redirect()->route('profile');
+        }catch(\Exception){
+            toastr()->error('Something wrong! Please try again.','Error');
+            return redirect()->route('profile');
+        }
+    }
+    public function jobIndex() {
+        if($jobs = Job::where('ucid', Auth::user()->id)->get()){
+            
+            return view('fe.profile.jobIndex', compact('jobs'));
+        };
+        return view('fe.profile.jobIndex');
+    }
+    public function application() {
+        if(Auth::user()->role == 'employee'){
+            $applications = Application::where('uid', Auth::user()->id)->get();
+        }else{
+            $applications = Application::where('ucid', Auth::user()->id)->get();
+        }
+        return view('fe.profile.application',compact('applications'))->render();
+    }
+    public function cv() {
+        
+        if($id = Auth::user()->cv_id){
+            $cv = Cv::find($id);
+            return view('fe.profile.cv',compact('cv'))->render();
+        };
+        return view('fe.profile.cv')->render();
+    }
+    public function changePass() {
+        return view('fe.profile.changePass')->render();
     }
     public function forgot_password(){
 

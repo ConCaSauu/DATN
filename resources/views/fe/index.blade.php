@@ -11,7 +11,7 @@
     <title>Good Job</title>
 
     <!-- Site Favicon -->
-    <link rel="icon" href="{{asset('fe/assets')}}/img/favicon/favicon.png" type="image/x-icon">
+    <link rel="icon" href="{{asset('upload/images')}}/logo3.jpg" type="image/x-icon">
 
     <!-- Css All Plugins Files -->
     <link rel="stylesheet" href="{{asset('fe/assets')}}/css/vendor/bootstrap.min.css">

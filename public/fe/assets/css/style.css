@@ -8471,13 +8471,14 @@ ul.bb-shop-tags li.active-tags a {
 
 .fit-ct{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
 }
 
 .profile-logo{
-  width: 25%;
+  width: 65%;
   
-  margin: 5px;
+  margin-bottom: 10px;
 }
 
 .profile-logo img{
@@ -8492,7 +8493,7 @@ ul.bb-shop-tags li.active-tags a {
 }
 .view-profile{
   margin: 15px;
-  display: none;
+  
 }
 .table-apply{
   font-family: 'Quicksand';

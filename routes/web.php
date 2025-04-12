@@ -29,19 +29,31 @@ route::post('/u-register', [UserController::class,'createUser']);
 route::get('/uc-register', [UserController::class,'UCregister'])->name('UCregister');
 route::post('/uc-register', [UserController::class,'createUser']);
 route::get('/logout', [UserController::class,'logout'])->name('logout');
-route::get('/profile', [UserController::class,'profile'])->name('profile');
-route::put('profile/{user}', [UserController::class,'updatePro'])->name('updatePro');
 route::get('/job-detail/{id}', [JobController::class,'job_detail'])->name('job_detail');
 
 route::get('/jobIndex', [HomeController::class,'jobIndex'])->name('jobIndex');
 route::get('/newList', [HomeController::class,'newList'])->name('newList');
 route::get('/newDetail/{id}', [NewController::class,'newDetail'])->name('newDetail');
-route::put('/updateCV/{id}', [UserController::class,'updateCV'])->name('updateCV');
-route::post('/createCV/{id}', [UserController::class,'createCV'])->name('createCV');
+
+route::prefix('profile')->group(function(){
+    route::get('/', [UserController::class,'profile'])->name('profile');
+    route::get('/application', [UserController::class,'application']);
+    route::get('/account', [UserController::class,'account']);
+    route::get('/changePass', [UserController::class,'changePass']);
+    route::get('/cv', [UserController::class,'cv']);
+    route::get('/jobEdit', [UserController::class,'jobEdit']);
+    route::get('/jobIndex', [UserController::class,'jobIndex'])->name('jobIndex');
+    route::put('/{user}', [UserController::class,'updatePro'])->name('updatePro');
+    route::put('/updateCV/{id}', [UserController::class,'updateCV'])->name('updateCV');
+    route::post('/createCV/{id}', [UserController::class,'createCV'])->name('createCV');
+    route::get('/jobCreate', [UserController::class,'jobCreate']);
+    route::post('/jobCreate', [UserController::class,'jobStore'])->name('jobStore');
+    route::get('/cancelAPL/{id}', [ApplicationController::class,'cancelAPL'])->name('cancelAPL');
+});
+
 route::post('/createAPL', [ApplicationController::class,'createAPL'])->name('createAPL');
-route::get('/cancelAPL/{id}', [ApplicationController::class,'cancelAPL'])->name('cancelAPL');
+
 route::get('/jobSearch', [HomeController::class,'jobIndex'])->name('job_search');
-route::get('/jobCreate', [JobController::class,'createJob'])->name('createJob');
 
 route::get('/verify-account/{email}',[UserController::class,'verify_account'])->name('verify_account');
 

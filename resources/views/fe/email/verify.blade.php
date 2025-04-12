@@ -11,7 +11,7 @@
  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
   <div class="bg-white p-6 rounded-lg shadow-lg text-center">
    <div class="bg-gray-200 py-4">
-    <img alt="Riot logo" class="mx-auto" height="50" src="https://storage.googleapis.com/a1aa/image/KP2FMn1Zdj7pC9zuwballHjqN7er1t3vGU2CforZEfbYh4wnA.jpg" width="50"/>
+    <img alt="GoodJob Compnay Logo" class="mx-auto" height="50" src="{{asset('upload/images')}}/logo3.jpg" width="50"/>
    </div>
    <h1 class="text-2xl font-bold mt-4">
     Your account has been created
