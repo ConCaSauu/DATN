@@ -9,7 +9,7 @@
                 <input type="text" name="name" placeholder="Enter your Job name" >
             </div>
             <div class="col-lg-6 bb-register-wrap bb-register-width-50 margin-bot-10">
-                <label>Expỉred Date</label>
+                <label>Expired Date</label>
                 <input type="date" name="exp_date">
             </div>
             <div class="col-lg-6 bb-register-wrap bb-register-width-50 margin-bot-10">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ForgotPassword;
 use App\Models\Application;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -14,10 +15,12 @@ use GrahamCampbell\ResultType\Success;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-// use Mail;
+use Illuminate\Support\Facades\Log;
 use App\Mail\VerifyAccount;
 use App\Models\Category;
+use App\Models\Password_reset_token;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -289,7 +292,7 @@ class UserController extends Controller
         return view('fe.profile.jobCreate',compact('categories'));
     }
     public function jobStore(Request $request){
-        dd($request->all());
+        // dd($request->all());
         try{
             Job::create($request->all());
             toastr()->success('Successful','Congrats');
@@ -297,6 +300,22 @@ class UserController extends Controller
         }catch(\Exception){
             toastr()->error('Something wrong! Please try again.','Error');
             return redirect()->route('profile');
+        }
+    }
+    public function jobEdit(string $id){
+        $job = Job::find($id);
+        $categories = Category::all();
+        return view('fe.profile.jobEdit',compact('job','categories'));
+    }
+    public function jobUpdate(Request $request, Job $job)
+    {  
+        try{
+            $job->update($request->all());
+            toastr()->success('Successful','Congrats');
+            return redirect()->route('profile');
+        }catch(\Exception){
+            toastr()->error('Cannot update! Please try again.','Error');
+            return redirect()->back();    
         }
     }
     public function jobIndex() {
@@ -322,20 +341,141 @@ class UserController extends Controller
         };
         return view('fe.profile.cv')->render();
     }
+    public function buyCoin() {
+        return view('fe.profile.buyCoin')->render();
+    }
     public function changePass() {
         return view('fe.profile.changePass')->render();
     }
-    public function forgot_password(){
+    public function vnpay_payment(Request $request){
+        $data = $request->all();
+        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        $vnp_Returnurl = "http://127.0.0.1:8000/profile/buyCoin";
+        $vnp_TmnCode = "1VYBIYQP"; //Mã định danh merchant kết nối (Terminal Id)
+        $vnp_HashSecret = "NOH6MBGNLQL9O9OMMFMZ2AX8NIEP50W1"; //Secret key
+        $vnp_TxnRef = rand(1,10000); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+        $vnp_OrderInfo = 'Thanh toán đơn hàng';
+        $vnp_OrderType = 'billpayment';
+        $vnp_Amount = $data['total_vnpay'] * 100;
+        $vnp_Locale = 'vn';
+        // $vnp_BankCode = 'NCB';
+        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
 
-    }
+        $inputData = array(
+            "vnp_Version" => "2.1.0",
+            "vnp_TmnCode" => $vnp_TmnCode,
+            "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_CurrCode" => "VND",
+            "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => $vnp_OrderInfo,
+            "vnp_OrderType" => $vnp_OrderType,
+            "vnp_ReturnUrl" => $vnp_Returnurl,
+            "vnp_TxnRef" => $vnp_TxnRef,
+            
+        );
 
-    public function check_forgot_pasword(){
+        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+            $inputData['vnp_BankCode'] = $vnp_BankCode;
+        }
 
-    }
-    public function reset_password(){
+        ksort($inputData);
+        $query = "";
+        $i = 0;
+        $hashdata = "";
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+            } else {
+                $hashdata .= urlencode($key) . "=" . urlencode($value);
+                $i = 1;
+            }
+            $query .= urlencode($key) . "=" . urlencode($value) . '&';
+        }
 
-    }
-    public function check_reset_password(){
+        $vnp_Url = $vnp_Url . "?" . $query;
+        if (isset($vnp_HashSecret)) {
+            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret);//  
+            $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+        }
+
+        $returnData = array(
+            'code' => '00',
+            'message' => 'success',
+            'data' => $vnp_Url
+        );
+        if (isset($_POST['redirect'])) {
+            header('Location: ' . $vnp_Url);
+            die();
+        } else {
+            echo json_encode($returnData);
+        }
         
+    }
+    public function forgot_password(){
+        return view('fe.forgotPassword');
+    }
+
+    public function check_forgot_password(Request $request){
+        // dd($request);
+        $request->validate([
+            'email' => 'required|email|exists:users,email'
+        ],[
+            'email.required' => 'Please enter email.',
+            'email.email' => 'Email is incorrect.',
+            'email.exists' => 'Your email is not exists in our system.'
+        ]);
+        $user = User::where('email', $request->email)->first();
+        $token = Str::random(63);
+        $tokenData = [
+            'email' => $request->email,
+            'token' => $token,
+        ];
+
+        if(Password_reset_token::create($tokenData)){
+            try {
+                Mail::to($request->email)->send(new ForgotPassword($user, $token));
+                toastr()->success('Please check your email to continue','Success');
+                return redirect()->back();
+            } catch (\Exception $e) {
+                Log::error('Password reset email failed: '.$e->getMessage());
+                toastr()->error('Failed to send email. Please try again later.','Error');
+                return redirect()->back();
+            }
+        }
+        toastr()->error('Please try again','Error');
+        return redirect()->back();
+    }
+    public function reset_password($token){
+        $tokenData = Password_reset_token::where('token', $token)->firstOrFail();  
+        return view('fe.resetPassword');
+    }
+    public function check_reset_password(Request $request, $token){
+        
+        $request->validate([
+            'password' => 'required|min:6',
+            'confirm-password' => 'required|same:password'
+        ],[
+            'password.required' => 'Please enter your password',
+            'password.min' => 'Your password is too short',
+            'confirm-password.required' => 'Confirm your password',
+            'confirm-password.same' => 'Your password is not correct'
+        ]);
+        
+        $tokenData = Password_reset_token::where('token', $token)->firstOrFail();
+        $user = $tokenData->user;
+
+        $check = $user->update([
+            'password' => Hash::make($request->password)
+        ]);
+        
+        if($check){
+            toastr()->success('Update Successfull','Your password has been changed');
+            return redirect()->route('home');
+        }
+        toastr()->error('Error','Failed to update, please try again');
+        return redirect()->back();
     }
 }

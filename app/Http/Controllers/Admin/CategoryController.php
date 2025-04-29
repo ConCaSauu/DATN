@@ -53,7 +53,7 @@ class CategoryController extends Controller
             }
             // dd($request->all());
             Category::create($request->all());
-            toastr()->success('Success to create','Successful');
+            // toastr()->success('Success to create','Successful');
             return redirect()->route('category.index')->with('success','Successful');
         }catch(\Exception){
             toastr()->error('Failed to create','Error');

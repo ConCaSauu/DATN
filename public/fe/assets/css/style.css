@@ -1057,7 +1057,7 @@ select {
   width: 100%;
   min-height: 45px;
   height: 48px;
-  padding: 10px 10px 10px 160px;
+  padding: 10px 10px 10px 15px;
   font-size: 14px;
   font-weight: 400;
   line-height: 1;
@@ -4131,6 +4131,18 @@ button.btn-close.qty_close {
 
 .category-items-5 {
   background-color: #fadafb;
+}
+
+.category-items-6 {
+  background-color: #fbdae0;
+}
+
+.category-items-7 {
+  background-color: #eedafb;
+}
+
+.category-items-8 {
+  background-color: #e2fbda;
 }
 
 .bb-category-box {

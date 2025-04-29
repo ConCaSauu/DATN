@@ -28,7 +28,7 @@
                   </div>
                   <div class="form-group ">
                     <label for="exampleInputPassword1">Icon</label></br>
-                    <input type="file" name="image" required>
+                    <input type="text" class="form-control" name="icon" placeholder="Your icon url" required>
                   </div>
                   <div class="form-group ">
                     <label for="exampleInputPassword1">Description</label>
@@ -37,11 +37,11 @@
                   <div class="form-group ">
                     <label for="exampleInputPassword1">Status</label>
                     <div class="form-check">
-                      <input type="radio" name="status" id="input" value="1" checked="checked">
+                      <input type="radio" name="status" id="input" value="active" checked="checked">
                       <label class="form-check-label">Active</label>
                     </div>
                     <div class="form-check ">
-                      <input type="radio" name="status" id="input" value="0">
+                      <input type="radio" name="status" id="input" value="unactive">
                       <label class="form-check-label">Unactive</label>
                     </div>
                   </div>

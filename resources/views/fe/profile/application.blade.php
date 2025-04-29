@@ -18,17 +18,19 @@
             <td>{{$apl->created_at}}</td>
             @if($apl->status == 'pending')
             <td style="color: orange">Pending</td>
-            @elseif($apl->status == 'accepted')
-            <td style="color: green">Accepted</td>
+            @elseif($apl->status == 'approved')
+            <td style="color: green">Approved</td>
+            @elseif($apl->status == 'rejected')
+            <td style="color: red">Rejected</td>
             @else
             <td style="color: red">Canceled</td>
             @endif
             <td>
                 @if($apl->status == 'pending')
                 <a href="" style="color:rgb(100, 100, 255)">Check Cv</a></br>
-                <a href="" style="color:green ">Accept</a><p> </p>
-                <a href="" style="color:red">Refuse</a>
-                @elseif($apl->status == 'accepted')
+                <a href="{{route('approveAPL',['id'=> $apl->id])}}" style="color:green ">Approve</a><p> </p>
+                <a href="{{route('rejectAPL',['id'=> $apl->id])}}" style="color:red">Reject</a>
+                @elseif($apl->status == 'approved')
                 <a href="" style="color:rgb(100, 100, 255)">Check Cv</a>
                 @else
                 @endif
@@ -54,10 +56,10 @@
             <td>{{$apl->created_at}}</td>
             @if($apl->status == 'pending')
             <td style="color: orange">Pending</td>
-            @elseif($apl->status == 'accepted')
-            <td style="color: green">Accepted</td>
+            @elseif($apl->status == 'approved')
+            <td style="color: green">Approved</td>
             @else
-            <td style="color: red">Canceled</td>
+            <td style="color: red">Rejected</td>
             @endif
             <td>
                 @if($apl->status == 'pending')

@@ -37,7 +37,7 @@
                     <a href="#" style="color: brown">Active</a>
                     @else
                     @endif
-                    <a href="#" style="color: #6c7fd8">Edit</a></br>
+                    <a href="#" style="color: #6c7fd8" onclick="loadEditView({{$job->id}})">Edit</a></br>
                     @if($job->level == '0' && $job->status != 'pending')
                     <a href="#">Upgrade</a>
                     @else
@@ -53,3 +53,25 @@
         <button type="button" id="createJob" class="bb-btn-2" onclick="loadView('jobCreate')">Create Job</button>
     </div>
 </div>
+
+<script>
+        function loadEditView(id) {
+            // Gọi AJAX
+            $.ajax({
+                url: `/profile/jobEdit/${id}`,
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    $('#profileContent').html(response);
+                    // Cập nhật trạng thái tab
+                    // $('.tab-button').removeClass('active');
+                    // $(`button:contains('${view}')`).addClass('active');
+                },
+                error: function(xhr) {
+                    $('#profile-content').html('<p>Lỗi khi tải dữ liệu</p>');
+                }
+            });
+        }
+</script>

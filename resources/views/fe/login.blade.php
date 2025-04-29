@@ -48,7 +48,7 @@
                             <input type="password" id="password" name="password" placeholder="Enter Your Password">
                         </div>
                         <div class="bb-login-wrap">
-                            <a href="javascript:void(0)">Forgot Password?</a>
+                            <a href="{{route('forgot_password')}}">Forgot Password?</a>
                         </div>
                         <div class="bb-login-button">
                             <button class="bb-btn-2" type="submit">Login</button>

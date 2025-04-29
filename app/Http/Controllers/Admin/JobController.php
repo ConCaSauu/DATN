@@ -101,7 +101,7 @@ class JobController extends Controller
         $num = 1;
         $user = User::find($job->ucid);
         
-        return view('fe.jobDetail', compact('job','user','num','jobs'));
+        return view('fe.job.jobDetail', compact('job','user','num','jobs'));
     }
     public function job_search(Request $request){
         $key = $request->search;

@@ -10,4 +10,7 @@ class Category extends Model
     use HasFactory;
     protected $fillable = ['name','icon','description','status'];
     
+    public function jobs(){
+        return $this->hasMany(Job::class,'cid','id');
+    }
 }

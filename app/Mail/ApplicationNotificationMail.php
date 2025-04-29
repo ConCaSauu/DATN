@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use App\Models\Application;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -9,19 +11,19 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ForgotPassword extends Mailable
+class ApplicationNotificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
+    public $application;
     public $user;
-    public $token;
-    public function __construct($user, $token)
+    public function __construct(Application $application, User $company)
     {
-        $this->user = $user;
-        $this->token = $token;
+        $this->application = $application;
+        $this->user = $company;
     }
 
     /**
@@ -30,7 +32,7 @@ class ForgotPassword extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Forgot Password',
+            subject: 'Application Notification Mail',
         );
     }
 
@@ -40,7 +42,7 @@ class ForgotPassword extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'fe.email.forgotPassword',
+            view: 'fe.email.applicationNotify',
         );
     }
 

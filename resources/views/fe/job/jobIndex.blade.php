@@ -6,16 +6,20 @@
             <div class="row">
                 <div class="col-12">
                     <div class="bb-category-6-colum owl-carousel">
-                        <div class="bb-category-box category-items-1" data-aos="flip-left" data-aos-duration="1000" data-aos-delay="500">
-                            <div class="category-image">
-                                <img src="https://cdn-icons-png.flaticon.com/512/5064/5064666.png" alt="category">
+                        @foreach ($cateWithJobCount as $category)
+                            <div class="bb-category-box category-items-{{$i}}" data-aos="flip-left" data-aos-duration="1000" data-aos-delay="500" style="padding: 30px 15px">
+                                <div class="category-image">
+                                    <img src="{{$category->icon}}" alt="category">
+                                </div>
+                                <div class="category-sub-contact">
+                                    <h5><a href="shop-left-sidebar-col-3.html">{{$category->name}}</a></h5>
+                                    <p>{{$category->jobs_count}}</p>
+                                </div>
+                                <div class="hidden">{{$i++}}</div>
                             </div>
-                            <div class="category-sub-contact">
-                                <h5><a href="shop-left-sidebar-col-3.html">IT</a></h5>
-                                <p>55 Jobs</p>
-                            </div>
-                        </div>
-                        <div class="bb-category-box category-items-2" data-aos="flip-left" data-aos-duration="1000" data-aos-delay="500">
+                        @endforeach
+                        
+                        {{-- <div class="bb-category-box category-items-2" data-aos="flip-left" data-aos-duration="1000" data-aos-delay="500">
                             <div class="category-image">
                                 <img src="https://cdn-icons-png.flaticon.com/512/18148/18148527.png" alt="category">
                             </div>
@@ -59,7 +63,7 @@
                                 <h5><a href="shop-left-sidebar-col-3.html">Auditing</a></h5>
                                 <p>08 Jobs</p>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -78,55 +82,15 @@
                             </div>
                             <div class="bb-sidebar-contact">
                                 <ul>
+                                    @foreach ($cateWithJobCount as $key)
                                     <li>
                                         <div class="bb-sidebar-block-item">
                                             <input type="checkbox">
-                                            <a href="javascript:void(0)">IT</a>
+                                            <a href="javascript:void(0)">{{$key->name}}</a>
                                             <span class="checked"></span>
                                         </div>
                                     </li>
-                                    <li>
-                                        <div class="bb-sidebar-block-item">
-                                            <input type="checkbox">
-                                            <a href="javascript:void(0)">Human Resources</a>
-                                            <span class="checked"></span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="bb-sidebar-block-item">
-                                            <input type="checkbox">
-                                            <a href="javascript:void(0)">Sale</a>
-                                            <span class="checked"></span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="bb-sidebar-block-item">
-                                            <input type="checkbox">
-                                            <a href="javascript:void(0)">Technology</a>
-                                            <span class="checked"></span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="bb-sidebar-block-item">
-                                            <input type="checkbox">
-                                            <a href="javascript:void(0)">Auditing</a>
-                                            <span class="checked"></span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="bb-sidebar-block-item">
-                                            <input type="checkbox">
-                                            <a href="javascript:void(0)">Accounting</a>
-                                            <span class="checked"></span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="bb-sidebar-block-item">
-                                            <input type="checkbox">
-                                            <a href="javascript:void(0)">Internship</a>
-                                            <span class="checked"></span>
-                                        </div>
-                                    </li>
+                                    @endforeach  
                                 </ul>
                             </div>
                         </div>
@@ -166,11 +130,11 @@
                                     </div>
                                 </div>
                             </div>
-                            @include('fe.jobList')
+                            @include('fe.job.jobList')
                             <div class="col-12">
                                 <div class="bb-pro-pagination">
                                     <p></p>
-                                    {{ $jobs->links('fe.paginationJob')}}
+                                    {{ $jobs->links('fe.job.paginationJob')}}
                                 </div>
                             </div>
                         </div>

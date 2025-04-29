@@ -41,14 +41,19 @@ route::prefix('profile')->group(function(){
     route::get('/account', [UserController::class,'account']);
     route::get('/changePass', [UserController::class,'changePass']);
     route::get('/cv', [UserController::class,'cv']);
-    route::get('/jobEdit', [UserController::class,'jobEdit']);
-    route::get('/jobIndex', [UserController::class,'jobIndex'])->name('jobIndex');
+    route::get('/jobEdit/{id}', [UserController::class,'jobEdit'])->name('jobEdit');
+    route::put('/jobUpdate/{id}', [UserController::class,'jobEdit'])->name('jobUpdate');
+    route::get('/jobIndex', [UserController::class,'jobIndex']);
     route::put('/{user}', [UserController::class,'updatePro'])->name('updatePro');
     route::put('/updateCV/{id}', [UserController::class,'updateCV'])->name('updateCV');
     route::post('/createCV/{id}', [UserController::class,'createCV'])->name('createCV');
     route::get('/jobCreate', [UserController::class,'jobCreate']);
     route::post('/jobCreate', [UserController::class,'jobStore'])->name('jobStore');
     route::get('/cancelAPL/{id}', [ApplicationController::class,'cancelAPL'])->name('cancelAPL');
+    route::get('/approveAPL/{id}', [ApplicationController::class,'approveAPL'])->name('approveAPL');
+    route::get('/rejectAPL/{id}', [ApplicationController::class,'rejectAPL'])->name('rejectAPL');
+    route::get('/buyCoin',[UserController::class,'buyCoin']);
+    route::post('/vnpay_payment', [UserController::class,'vnpay_payment']);
 });
 
 route::post('/createAPL', [ApplicationController::class,'createAPL'])->name('createAPL');

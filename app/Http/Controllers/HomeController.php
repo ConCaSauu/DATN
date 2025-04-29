@@ -47,11 +47,14 @@ class HomeController extends Controller
         }
         if (request()->ajax()) {
             return response()->json([
-                'html' => view('fe.jobIndex', compact('jobs'))->render(),
+                'html' => view('fe.job.jobIndex', compact('jobs'))->render(),
                 'pagination' => $jobs->links('fe.paginationJob')->render()
             ]);
         }
-        return view('fe.jobIndex',compact('jobs'));
+        // $categories = Category::all();
+        $i = 1;
+        $cateWithJobCount = Category::withCount('jobs')->get();
+        return view('fe.job.jobIndex',compact('jobs','cateWithJobCount','i'));
     }
 
     public function newList(){

@@ -37,46 +37,6 @@
 
     <!-- Header -->
     <header class="bb-header">
-        {{-- <div class="top-header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="inner-top-header">
-                            <div class="col-left-bar">
-                                <a href="shop-left-sidebar-col-3.html">Flat 50% Off On Grocery Shop.</a>
-                            </div>
-                            <div class="col-right-bar">
-                                <div class="cols">
-                                    <a href="faq.html">Help?</a>
-                                </div>
-                                <div class="cols">
-                                    <a href="track-order.html">Track Order</a>
-                                </div>
-                                <div class="cols">
-                                    <div class="custom-dropdown">
-                                        <a class="bb-dropdown-toggle" href="#">Language</a>
-                                        <ul class="dropdown">
-                                            <li><a href="javascript:void(0)">English</a></li>
-                                            <li><a href="javascript:void(0)">Hindi</a></li>
-                                            <li><a href="javascript:void(0)">Gujarati</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="cols">
-                                    <div class="custom-dropdown">
-                                        <a class="bb-dropdown-toggle" href="#">Currency</a>
-                                        <ul class="dropdown">
-                                            <li><a href="javascript:void(0)">USD $</a></li>
-                                            <li><a href="javascript:void(0)">EUR €</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
         <div class="bottom-header">
             <div class="container">
                 <div class="row">
@@ -102,7 +62,7 @@
                                 <div class="header-search">
                                     <form class="bb-btn-group-form" action="{{route('job_search')}}">
                                         @csrf
-                                        <div class="inner-select">
+                                        {{-- <div class="inner-select">
                                             <div class="custom-select">
                                                 <select>
                                                     <option value="option1">Ha Noi</option>
@@ -110,7 +70,7 @@
                                                     
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <input class="form-control bb-search-bar" placeholder="Search Jobs..."
                                             type="text" name="search">
                                         <button class="submit" type="submit"><i class="ri-search-line"></i></button>
@@ -165,11 +125,11 @@
                                             </ul>
                                             @endif        
                                         </div>
-                                        <a href="javascript:void(0)" class="bb-toggle-menu">
+                                        {{-- <a href="javascript:void(0)" class="bb-toggle-menu">
                                             <div class="header-icon">
                                                 <i class="ri-menu-3-fill"></i>
                                             </div>
-                                        </a>
+                                        </a> --}}
                                     </div>
                                 </div>
                             </div>
@@ -249,7 +209,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="bb-dropdown-menu">
+                            {{-- <div class="bb-dropdown-menu">
                                 <div class="inner-select">
                                     <svg class="svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -267,14 +227,14 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="bb-mobile-menu-overlay"></div>
-        <div id="bb-mobile-menu" class="bb-mobile-menu">
+        {{-- <div id="bb-mobile-menu" class="bb-mobile-menu">
             <div class="bb-menu-title">
                 <span class="menu_title">My Menu</span>
                 <button type="button" class="bb-close-menu">×</button>
@@ -402,7 +362,7 @@
                     <!-- Social End -->
                 </div>
             </div>
-        </div>
+        </div> --}}
     </header>
 
     @yield('content')

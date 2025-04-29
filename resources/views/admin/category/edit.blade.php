@@ -28,18 +28,22 @@
                     <span class="error invalid-feedback ">{{$message}}</span>
                     @enderror
                   </div>
-                  <div class="form-group has-error">
+                  <div class="form-group ">
+                    <label for="exampleInputPassword1">Icon</label></br>
+                    <input type="text" class="form-control" name="icon" value="{{$category->icon}}" placeholder="Your icon url" required>
+                  </div>
+                  <div class="form-group ">
                     <label for="exampleInputPassword1">Description</label>
                     <textarea type="text" class="form-control" name="description" id="exampleInputPassword1" placeholder="...">{{$category->description}}</textarea>
                   </div>
                   <div class="form-group ">
                     <label for="exampleInputPassword1">Status</label>
                     <div class="form-check">
-                      <input type="radio" name="status" id="input" value="1" {{$category->status == 1 ? 'checked' : ''}}>
+                      <input type="radio" name="status" id="input" value="active" {{$category->status == "active" ? 'checked' : ''}}>
                       <label class="form-check-label">Active</label>
                     </div>
                     <div class="form-check ">
-                      <input type="radio" name="status" id="input" value="0" {{$category->status == 0 ? 'checked' : ''}}>
+                      <input type="radio" name="status" id="input" value="unactive" {{$category->status == "unactive" ? 'checked' : ''}}>
                       <label class="form-check-label">Unactive</label>
                     </div>
                   </div>

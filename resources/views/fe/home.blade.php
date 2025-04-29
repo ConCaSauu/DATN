@@ -110,7 +110,7 @@
                             <div class="bb-category-block owl-carousel">
                                 @foreach($categories as $key)
                                 <div class="bb-category-box category-items-{{$item}}" data-aos="flip-left" data-aos-duration="1000"
-                                    data-aos-delay="{{$item*200-50}}">
+                                    data-aos-delay="{{$item*200-50}}" style="padding: 30px 15px">
                                     <div class="category-image">
                                         <img src="{{$key->icon}}" alt="category">
                                     </div>

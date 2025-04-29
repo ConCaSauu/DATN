@@ -38,7 +38,7 @@
                         <td>{{$cate->name}}</td>
                         <td>{{$cate->description}}</td>
                         <td>
-                            @if ($cate->status==1)
+                            @if ($cate->status=="active")
                                 <span class="text text-success"><label class="col-form-label">Active</label></span>
                             @else
                                 <span class="text text-danger"><label class="col-form-label">Unactive</label></span>

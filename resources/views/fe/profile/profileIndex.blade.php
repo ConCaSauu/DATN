@@ -11,7 +11,7 @@
                 <div class="bb-cart-sidebar-block fit-ct">              
                     <div class="profile-logo">
                         @if (Auth::user()->logo)
-                            <img src="{{asset('upload/images')}}/{{Auth::user()->logo}}" alt="">
+                            <img src="{{asset('upload/images')}}/{{Auth::user()->logo}}" alt="logo">
                         @else 
                             <img src="{{asset('upload/images')}}/{{Auth::user()->gender == 1 ? 'male.png' : 'female.png'}}">
                         @endif
@@ -48,12 +48,24 @@
                             </a>    
                             <div class="bottom-bor"></div>                   
                         </div>
+                        <div class="profile-cat">
+                            <a href="#" onclick="loadView('buyCoin')">
+                                <h5 >Buy G Coin</h5>
+                            </a>      
+                            <div class="bottom-bor"></div>                 
+                        </div>
                     @elseif(Auth::user()->role == 'company')
                         <div class="profile-cat">
                             <a href="#" onclick="loadView('jobIndex')">
                                 <h5 >Job</h5>
                             </a>    
                             <div class="bottom-bor"></div>                   
+                        </div>
+                        <div class="profile-cat">
+                            <a href="#" onclick="loadView('buyCoin')">
+                                <h5>Buy G Coin</h5>
+                            </a>      
+                            <div class="bottom-bor"></div>                 
                         </div>
                     @else
                         <div class="profile-cat">
@@ -161,8 +173,7 @@
                 const input = document.getElementById(inputId);
                 input.type = passwordVisible ? "text" : "password"; 
             });
-    }
-
+    }    
 
     function validateInputs() {
             const salaryMin = document.getElementById('salaryMin').value;
