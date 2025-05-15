@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Job extends Model
 {
     use HasFactory;
-    protected $fillable = ['cid','ucid','name','description','exd_date','salary_min','salary_max','status'];
+    protected $fillable = ['cid','ucid','name','com_name','location','description','exd_date','salary_min','salary_max','status'];
 
     public function category()
     {

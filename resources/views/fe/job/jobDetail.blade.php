@@ -16,9 +16,8 @@
                         <div class="col-lg-8 col-12 mb-24">
                             <div class="bb-single-pro-contact">
                                 <div class="bb-sub-title">
-                                    <h5 style="color:#686e7d; margin: 20px 0px">{{$user->name}}</h5>
+                                    <a href="{{route('company.detail',$job->ucid)}}"><h5 style="color:#686e7d; margin: 20px 0px">{{$user->name}}</h5></a>
                                     <h4 style="font-size: 27px; margin-bottom:12px">{{$job->name}}</h4>
-                                    
                                 </div>
                                 <div class="jobD-container">
                                     <div class="jobD-info">
@@ -115,18 +114,23 @@
                                         <h3>Add a Review</h3>
                                         <div class="bb-review-rating">
                                         </div>
-                                        <form action="#">
+                                        <form id="feedback-create" action="{{route('feedbackStore')}}" method="post">
+                                            @csrf
                                             <div class="input-box">
-                                                <input type="text" placeholder="Name" name="your-name">
+                                                @if(Auth::user())
+                                                <input type="hidden" name="uid" value="{{Auth::user()->id}}">
+                                                @else
+                                                @endif
                                             </div>
                                             <div class="input-box">
-                                                <input type="email" placeholder="Email" name="your-email">
+                                                <input type="hidden" name="ucid" value="{{$job->ucid}}">
                                             </div>
                                             <div class="input-box">
-                                                <textarea name="your-comment" placeholder="Enter Your Comment"></textarea>
+                                                <textarea name="content" placeholder="Enter Your Comment"></textarea>
                                             </div>
+                                            <input type="hidden" name="status" value="pending">
                                             <div class="input-button">
-                                                <a href="javascript:void(0)" class="bb-btn-2">View Cart</a>
+                                                <a href="" class="bb-btn-2" onclick="document.getElementById('feedback-create').submit(); return false;">Send</a>
                                             </div>
                                         </form>
                                     </div>
@@ -151,10 +155,10 @@
                 </div>
             </div>
             <div class="col-12">
-                @foreach($jobs as $job)
+                @foreach($jobs as $item)
                     <div class=" bb-pro-box jod " data-aos="fade-up" data-aos-duration="1000" data-aos-delay="{{$num*150}}">
                         <div class="logo-com">
-                            <a href="{{route('job_detail', ['id' => $job->id] )}}">
+                            <a href="{{route('job_detail', ['id' => $item->id] )}}">
                             <div class="logo-align ">
                                 <img src="{{asset('upload/images')}}/fpt.png">
                             </div> 
@@ -163,17 +167,17 @@
                         </div>
                         <div class="job-info">
                             <h5 class="bb-pro-title">
-                                <a style="font-family: quicksand; font-weight:bold; color:#3d4750" href="{{route('job_detail', ['id' => $job->id] )}}">{{$job->name}}</a>
+                                <a style="font-family: quicksand; font-weight:bold; color:#3d4750" href="{{route('job_detail', ['id' => $item->id] )}}">{{$item->name}}</a>
                                 
                             </h5>
-                            <h6 style="font-family: quicksand; font-weight:bold; margin-top:5px; color:#686e7d">{{$job->com_name}}</h6>
+                            <h6 style="font-family: quicksand; font-weight:bold; margin-top:5px; color:#686e7d">{{$item->com_name}}</h6>
                             <div class="salary">
-                                @if ($job->salary_max == null)
-                                    <h6>Từ {{$job->salary_min}} triệu</h6>
-                                @elseif ($job->salary_min == null)
-                                    <h6>Lên đến {{$job->salary_max}} triệu</h6>
+                                @if ($item->salary_max == null)
+                                    <h6>Từ {{$item->salary_min}} triệu</h6>
+                                @elseif ($item->salary_min == null)
+                                    <h6>Lên đến {{$item->salary_max}} triệu</h6>
                                 @else
-                                    <h6>Từ {{$job->salary_min}}-{{$job->salary_max}}  triệu</h6>
+                                    <h6>Từ {{$item->salary_min}}-{{$item->salary_max}}  triệu</h6>
                                 @endif
                             </div>
                         </div>  

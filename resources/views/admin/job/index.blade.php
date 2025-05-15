@@ -41,28 +41,42 @@
                         <td>{{$item->category->name}}</td>
                         <td>{{$item->ucid}}</td>
                         <td>{{$item->name}}</td>
-                        <td>{{number_format($item->salary_min)}} vnd</td>
-                        <td>{{number_format($item->salary_max)}} vnd</td>
-                        <td>
-                            @if ($item->status==1)
-                                <span class="text text-success">Active</span>
+                        <td>@if($item->salary_min)
+                                {{number_format($item->salary_min)}} Tr
                             @else
+                                none
+                            @endif
+                        </td>
+                        <td>
+                            @if($item->salary_max)
+                                {{number_format($item->salary_max)}} Tr
+                            @else
+                                none
+                            @endif
+                        </td>
+                        <td>
+                            @if ($item->status == 'active')
+                                <span class="text text-success">Active</span>
+                            @elseif($item->status == 'unactive')
                                 <span class="text text-danger">Unactive</span>
+                            @elseif($item->status == 'lock')
+                                <span class="text text-danger">Lock</span>
+                            @elseif($item->status == 'pending')
+                                <span class="text text-warning">Pending</span>
                             @endif
                         </td>
                         <td>{{$item->created_at}}</td>
                         <td>{{$item->updated_at}}</td>
-                        <td>
-                            
-                            <a href="{{route('job.edit', $item->id)}}" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-                            
-                            <form onsubmit="return confirm('Do you want to delete this category?');" action="{{route('job.destroy',$item)}}" method="POST">
-                                @method('DELETE')
-                                @csrf
-                                
-                                <button type="submit" class="btn btn-danger" value=""><i class="fa-solid fa-trash"></i> Delete</button>  
-                            </form>
-                            
+                        <td style="display:flex">   
+                            <a style="flex: 1" href="{{route('job.edit', $item)}}" ><i class="fa-solid fa-pen-to-square"></i></a>
+                            @if($item->status == 'active')
+                            <a style="flex: 1" href="{{route('job.lock', $item)}}" onclick="lockJobWithConfirmation(event)"><i style="color: red" class="fa-solid fa-lock"></i></a> 
+                            @elseif($item->status == 'pending')
+                            <a style="flex: 1" href="{{route('job.accept', $item)}}"><i style="color:green" class=" fa-solid fa-circle-check"></i></a>
+                            @elseif($item->status == 'lock')
+                            <a style="flex: 1" href="{{route('job.unlock', $item)}}"><i style="color:green" class="fa-solid fa-key"></i></a>
+                            @else
+                            @endif
                         </td>
                     </tr>
                     @empty
@@ -73,7 +87,15 @@
         </div>
     </div>
 </div>
-
+<script>
+    function submitWithConfirmation(event) {
+        
+        const confirmed = confirm('Are you sure you want to lock this Job?');
+        if(!confirmed) {
+            event.preventDefault(); // prevent default link behavior
+        }
+    }
+</script>
 @endsection
 
 {{--  

@@ -35,7 +35,7 @@
                     </div>
                     <div class="col-md-6">
                       <div class="form-group ">
-                        <label for="exampleInputEmail1">Company Id</label>
+                        <label for="exampleInputEmail1">Company Name</label>
                         <input type="text" class="form-control @error('ucid') is-invalid @enderror" name="ucid" id="exampleInputEmail1" placeholder="...">
                         @error('ucid')
                         <span class="error invalid-feedback ">{{$message}}</span>

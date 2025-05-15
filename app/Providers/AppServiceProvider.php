@@ -4,7 +4,11 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Models\Application;
+use App\Models\User;
+use App\Models\Job;
 use App\Observers\ApplicationObserver;
+use App\Observers\DateObserver;
+use App\Observers\UserStatusObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,5 +26,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Application::observe(ApplicationObserver::class);
+        User::observe(UserStatusObserver::class);
+        Job::observe(DateObserver::class);
     }
 }

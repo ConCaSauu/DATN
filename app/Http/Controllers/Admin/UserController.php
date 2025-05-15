@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Mail\ForgotPassword;
 use App\Models\Application;
+use Exception;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Cv;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Mail\VerifyAccount;
 use App\Models\Category;
+use App\Models\Feedback;
 use App\Models\Password_reset_token;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -79,6 +81,42 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function lockUser(User $user){
+        try{
+            if($user){
+                
+                $user->status = 'lock';
+                $user->save();
+                toastr()->success('User has been locked','Successfull');
+                return redirect()->back();
+            }
+            // toastr()->error('Unable to lock user','Failed');
+            // return redirect()->back();
+        }catch(\Exception $e){
+            Log::error("Error: ".$e->getMessage());
+            toastr()->error('Unable to lock user','Failed');
+            return redirect()->back();
+        }
+        
+    }
+    public function unlockUser(User $user){
+        try{
+            if($user){
+                
+                $user->status = 'active';
+                $user->save();
+                toastr()->success('User has been unlocked','Successfull');
+                return redirect()->back();
+            }
+            // toastr()->error('Unable to lock user','Failed');
+            // return redirect()->back();
+        }catch(\Exception $e){
+            Log::error("Error: ".$e->getMessage());
+            toastr()->error('Unable to unlock user','Failed');
+            return redirect()->back();
+        }
+        
     }
     public function login(){
         return view('fe.login');
@@ -297,7 +335,8 @@ class UserController extends Controller
             Job::create($request->all());
             toastr()->success('Successful','Congrats');
             return redirect()->route('profile');
-        }catch(\Exception){
+        }catch(\Exception $e){
+            Log::error("Error: ".$e->getMessage());
             toastr()->error('Something wrong! Please try again.','Error');
             return redirect()->route('profile');
         }
@@ -319,11 +358,12 @@ class UserController extends Controller
         }
     }
     public function jobIndex() {
+        $slot = Auth::user()->job_limit - Job::where('ucid', Auth::user()->id)->count();
         if($jobs = Job::where('ucid', Auth::user()->id)->get()){
             
-            return view('fe.profile.jobIndex', compact('jobs'));
+            return view('fe.profile.jobIndex', compact('jobs','slot'));
         };
-        return view('fe.profile.jobIndex');
+        return view('fe.profile.jobIndex', compact('slot'));
     }
     public function application() {
         if(Auth::user()->role == 'employee'){
@@ -347,10 +387,23 @@ class UserController extends Controller
     public function changePass() {
         return view('fe.profile.changePass')->render();
     }
+    public function feedbackStore(Request $request){
+        if(Auth::user()){
+            if(Auth::user()->role == "employee"){
+                Feedback::create($request->all());
+                toastr()->success('Your feedback has been sent');
+                return redirect()->back();
+            }
+            toastr()->error('You dont have permission');
+            return redirect()->back();
+        }
+        toastr()->info('You need to login first');
+        return redirect()->route('login');
+    }
     public function vnpay_payment(Request $request){
         $data = $request->all();
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "http://127.0.0.1:8000/profile/buyCoin";
+        $vnp_Returnurl = "http://127.0.0.1:8000/profile/transaction";
         $vnp_TmnCode = "1VYBIYQP"; //Mã định danh merchant kết nối (Terminal Id)
         $vnp_HashSecret = "NOH6MBGNLQL9O9OMMFMZ2AX8NIEP50W1"; //Secret key
         $vnp_TxnRef = rand(1,10000); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
@@ -413,6 +466,75 @@ class UserController extends Controller
             echo json_encode($returnData);
         }
         
+    }
+    public function transaction(Request $request){
+        // Kiểm tra mã phản hồi từ VNPay
+        if ($request->vnp_ResponseCode == '00') {
+            // Giao dịch thành công
+            $amount = $request->vnp_Amount / 100; // VNPay trả về số tiền nhân 100
+            $transactionId = $request->vnp_TransactionNo;
+            $orderInfo = $request->vnp_OrderInfo;
+
+            // Xác định gói nạp dựa trên số tiền
+            $coinToAdd = 0;
+            
+            switch ($amount) {
+                case 125000:
+                    $coinToAdd = 20;
+                    break;
+                case 250000:
+                    $coinToAdd = 50;
+                    break;
+                case 575000:
+                    $coinToAdd = 100;
+                    break;
+                default:
+                    // Nếu số tiền không khớp với các gói
+                    Log::error("Invalid payment amount: $amount");
+                    return redirect()->route('profile')->with('error', 'Invalid amount');
+            }
+
+            try {
+                // Cập nhật coin cho user
+                $user = User::find(Auth::user()->id);
+                $user->coin += $coinToAdd;
+                $user->save();
+
+                // Log thông tin giao dịch thành công
+                Log::info("Payment successful. User: {$user->id}, Amount: $amount, Coin added: $coinToAdd");
+
+                // Chuyển hướng đến trang thông báo thành công
+                return redirect()->route('profile')->with([
+                    'success' => 'Transaction completed',
+                    'coin_added' => $coinToAdd,
+                    'new_balance' => $user->coin
+                ]);
+                
+            } catch (\Exception $e) {
+                Log::error("Error updating user coin: " . $e->getMessage());
+                return redirect()->route('profile')->with('error', 'Something wrong');
+            }
+        } else {
+            // Giao dịch thất bại
+            Log::error("Payment failed. Response code: " . $request->vnp_ResponseCode);
+            return redirect()->route('profile')->with('error', 'Your transaction has been canceled');
+        }
+    }
+    public function buySlotView(){
+        return view('fe.profile.buySlot');
+    }
+    public function buySlot(Request $request){
+        $slot_to_add = $request->slot;
+        $cost = $request->cost;
+        if(Auth::user()->coin >= $cost){
+            $user = User::find(Auth::user()->id);
+            $user->update([
+                'job_limit' => $user->job_limit + $slot_to_add,
+                'coin' => $user->coin - $cost,
+            ]);
+            return back()->with('success','Purchase successful');
+        }
+        return back()->with('error','You dont have enough G coin');
     }
     public function forgot_password(){
         return view('fe.forgotPassword');

@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{{asset('fe/assets')}}/css/vendor/animate.min.css">
     <link rel="stylesheet" href="{{asset('fe/assets')}}/css/vendor/jquery-range-ui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    
     <!-- Main Style -->
     <link rel="stylesheet" href="{{asset('fe/assets')}}/css/style.css">
 </head>
@@ -31,7 +32,7 @@
 
     <!-- Loader -->
     <div class="bb-loader">
-        <img src="{{asset('fe/assets')}}/img/logo/loader.png" alt="loader">
+        <img src="{{asset('upload/images')}}/loader.jpg" alt="loader">
         <span class="loader"></span>
     </div>
 
@@ -679,6 +680,7 @@
     </footer>
 
     <!-- Plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="{{asset('fe/assets')}}/js/vendor/bootstrap.bundle.min.js"></script>
     <script src="{{asset('fe/assets')}}/js/vendor/jquery.min.js"></script>
     <script src="{{asset('fe/assets')}}/js/vendor/jquery.zoom.min.js"></script>

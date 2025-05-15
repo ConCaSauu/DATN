@@ -33,8 +33,13 @@ class User extends Authenticatable
         'description',
         'city',
         'web',
+        'coin',
+        'job_limit',
         'status',
     ];
+    public function job(){
+        return $this->hasMany(Job::class,'ucid','id');
+    }
 
     /**
      * The attributes that should be hidden for serialization.

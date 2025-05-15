@@ -116,8 +116,9 @@
                     <div class="inner-blog-details-contact new-content">
                         <span>{{$new->created_at}}</span>
                         <h4 class="sub-title" style="font-family: quicksand">{!!$new->title!!}</h4>
-                        <p style="font-family: quicksand">{!!$new->preview!!}</p>
-                        <p style="font-family: quicksand">{!!$new->content!!}</p>
+                        <p >{!!$new->preview!!}</p>
+                        {{-- <p style="font-family: quicksand">{!!$new->content!!}</p> --}}
+                        <div style="font-family: quicksand">{!!$new->content!!}</div>
                     </div>
                     {{-- <div class="col-12">
                         <div class="bb-pro-pagination">

@@ -21,7 +21,7 @@
                             <span class="old-price">$8</span>
                         </div>
                         <input type="hidden" name="total_vnpay" value="125000">
-                        <button type="submit" id="buyCoin" class="bb-btn-2" name="redirect">VNPay</button>
+                        <button type="submit" id="buyCoin" class="bb-btn-2" name="redirect">Buy now</button>
                     </div>
                 </form>
             </div>
@@ -39,13 +39,17 @@
             </div>                
             <div class="bb-pro-contact">
                 <h4 class="bb-pro-title">50 G Coin</h4>
-                <div class="bb-price">
-                    <div class="inner-price">
-                        <span class="new-price">$12</span>
-                        <span class="old-price">$15</span>
+                <form action="{{ url('profile/vnpay_payment')}}" method="POST">
+                    @csrf
+                    <div class="bb-price">
+                        <div class="inner-price">
+                            <span class="new-price">$12</span>
+                            <span class="old-price">$15</span>
+                        </div>
+                        <input type="hidden" name="total_vnpay" value="300000">
+                        <button type="submit" id="buyCoin" class="bb-btn-2" name="redirect">Buy now</button>
                     </div>
-                    <button type="submit" id="buyCoin" class="bb-btn-2">Buy now</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -61,14 +65,23 @@
             </div>                
             <div class="bb-pro-contact">
                 <h4 class="bb-pro-title">100 G Coin</h4>
-                <div class="bb-price">
-                    <div class="inner-price">
-                        <span class="new-price">$23</span>
-                        <span class="old-price">$29</span>
+                <form action="{{ url('profile/vnpay_payment')}}" method="POST">
+                    @csrf
+                    <div class="bb-price">
+                        <div class="inner-price">
+                            <span class="new-price">$23</span>
+                            <span class="old-price">$29</span>
+                        </div>
+                        <input type="hidden" name="total_vnpay" value="575000">
+                        <button type="submit" id="buyCoin" class="bb-btn-2" name="redirect">Buy now</button>
                     </div>
-                    <button type="submit" id="buyCoin" class="bb-btn-2">Buy now</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+{{-- Ngân hàng: NCB
+Số thẻ: 9704198526191432198
+Tên chủ thẻ:NGUYEN VAN A
+Ngày phát hành:07/15
+Mật khẩu OTP:123456 --}}

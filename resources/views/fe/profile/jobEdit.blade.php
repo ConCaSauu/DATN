@@ -16,7 +16,7 @@
             <div class="col-lg-6 bb-register-wrap bb-register-width-50 margin-bot-10">
                 <label>Category</label>
                 <div style="border: 1px solid #eeeeee; border-radius: 10px; padding: 12px;">
-                    <select name="category" id="select-category" style="display: block; width: -webkit-fill-available;">
+                    <select name="cid" id="select-category" style="display: block; width: -webkit-fill-available;">
                         @foreach ($categories as $item) 
                             <option {{$item->id == $job->cid ? 'selected' : '' }} value="{{$item->id}}">{{$item->name}}</option>
                         @endforeach
@@ -34,7 +34,7 @@
             </div>
             <div class="bb-register-wrap bb-register-width-50 margin-bot-10">
                 <label>Description</label>
-                <textarea id="description" name="description" placeholder="Enter your job description">{{$job->description}}</textarea>
+                <textarea id="description" name="description" placeholder="Enter your job description" style="height: 270px">{{$job->description}}</textarea>
             </div>
             <div class="col-lg-6 bb-register-wrap bb-register-width-50 margin-bot-10">
                 <label>Salary Min (million VND)</label>

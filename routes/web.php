@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\NewController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,12 +31,19 @@ route::get('/uc-register', [UserController::class,'UCregister'])->name('UCregist
 route::post('/uc-register', [UserController::class,'createUser']);
 route::get('/logout', [UserController::class,'logout'])->name('logout');
 route::get('/job-detail/{id}', [JobController::class,'job_detail'])->name('job_detail');
-
+route::post('/createFeedback',[UserController::class,'feedbackStore'])->name('feedbackStore');
 route::get('/jobIndex', [HomeController::class,'jobIndex'])->name('jobIndex');
+route::get('/jobIndex/category/{categoryId}', [HomeController::class,'filterByCategory']);
+route::get('/jobIndex/location/{location}', [HomeController::class,'filterByLocation']);
+route::get('/jobIndex/salary', [HomeController::class,'filterBySalary']);
+Route::get('/jobIndex/fetch', [HomeController::class, 'fetchJobs'])->name('jobFetch');
+route::post('/jobIndex', [HomeController::class,'test']);
 route::get('/newList', [HomeController::class,'newList'])->name('newList');
 route::get('/newDetail/{id}', [NewController::class,'newDetail'])->name('newDetail');
+route::get('/company-detail/{id}', [HomeController::class,'companyDetail'])->name('company.detail');
 
-route::prefix('profile')->group(function(){
+
+route::prefix('profile')->middleware('login')->group(function(){
     route::get('/', [UserController::class,'profile'])->name('profile');
     route::get('/application', [UserController::class,'application']);
     route::get('/account', [UserController::class,'account']);
@@ -53,6 +61,9 @@ route::prefix('profile')->group(function(){
     route::get('/approveAPL/{id}', [ApplicationController::class,'approveAPL'])->name('approveAPL');
     route::get('/rejectAPL/{id}', [ApplicationController::class,'rejectAPL'])->name('rejectAPL');
     route::get('/buyCoin',[UserController::class,'buyCoin']);
+    route::get('/transaction',[UserController::class,'transaction']);
+    route::get('/buySlot',[UserController::class,'buySlotView']);
+    route::post('/buySlot',[UserController::class,'buySlot'])->name('buySlot');
     route::post('/vnpay_payment', [UserController::class,'vnpay_payment']);
 });
 
@@ -76,6 +87,14 @@ route::prefix('admin')->middleware('admin')->group(function(){
     Route::resource('job', JobController::class);
     Route::resource('new', NewController::class);
     Route::resource('user', UserController::class);
+    Route::get('/user/lock/{user}',[UserController::class,'lockUser'])->name('user.lock');
+    Route::get('/user/active/{user}',[UserController::class,'unlockUser'])->name('user.unlock');
+    Route::get('/job/lock/{item}',[JobController::class,'lockJob'])->name('job.lock');
+    Route::get('/job/active/{item}',[JobController::class,'unlockJob'])->name('job.unlock');
+    Route::get('/job/accept/{item}',[JobController::class,'acceptJob'])->name('job.accept');
+    Route::get('/job/upgrade/{job}',[JobController::class,'upgradeJob'])->name('job.upgrade');    
     Route::resource('application', ApplicationController::class);
+    Route::get('/application/detail/{id}',[ApplicationController::class,'detail'])->name('application.detail');    
+
 });
 

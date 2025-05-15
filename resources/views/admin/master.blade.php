@@ -6,6 +6,8 @@
   <title>Good Job | Management</title>
 
   <!-- Google Font: Source Sans Pro -->
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{{asset('assets/plugins')}}/fontawesome-free/css/all.min.css">
@@ -16,6 +18,14 @@
   <link rel="stylesheet" href="{{asset('assets/dist')}}/css/adminlte.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css">
 
+  <style>
+    @font-face {
+    font-family: 'Quicksand', sans-serif;
+    src: url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  </style>
 </head>
 <!--
 `body` tag options:
@@ -85,6 +95,12 @@
 <script src="{{asset('assets/ckeditor/ckeditor.js')}}"></script>
 
 <script>
+  // CKEDITOR.replace('editor', {
+  //           font_names: 'Quicksand/Quicksand, sans-serif; Arial/Arial, sans-serif;',
+            
+  //           font_defaultLabel: 'Quicksand',
+  //           fontSize_defaultLabel: '14px'
+  // });
   // $( function() {
   //   $( "#return_day" ).datepicker();
   //   $( "#departure_day" ).datepicker();

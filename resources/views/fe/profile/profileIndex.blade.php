@@ -21,68 +21,88 @@
                         @if(Auth::user()->role == 'employee')
                         <p style="margin-left: 10px">{{\Carbon\Carbon::parse(Auth::user()->birthday)->format('d/m/Y')}}</p>
                         @elseif(Auth::user()->role == 'company')
-                        <a style="margin-left: 10px" href="#">{{Auth::user()->web}}</a>
+                            @if (Auth::user()->web)
+                            <a style="margin-left: 10px; text-decoration: underline" href="{{Auth::user()->web}}">{{Auth::user()->web}}</a></br>
+                            @else
+                            @endif
+                        <strong>G Coin: {{Auth::user()->coin}}</strong>
                         @else
                         <p style="margin-left: 10px">{{\Carbon\Carbon::parse(Auth::user()->birthday)->format('d/m/Y')}}</p>
-                        <a style="margin-left: 10px; text-decoration: underline" href="#">{{Auth::user()->web}}</a>
+                            @if (Auth::user()->web)
+                            <a style="margin-left: 10px; text-decoration: underline" href="{{Auth::user()->web}}">{{Auth::user()->web}}</a></br>
+                            @else
+                            @endif
+                        <strong>G Coin: {{Auth::user()->coin}}</strong>
                         @endif
                     </div>
                 </div> 
                 <div class="" style="margin-top: 15px; margin-left: 5px; margin-right: 5px; ">
                     <div class="profile-cat">
-                        <a href="#" onclick="loadView('account')">
+                        <a href="#" onclick="loadView(event, 'account')">
                             <h5 >Account</h5>
                         </a>  
                         <div class="bottom-bor"></div>                     
                     </div>
                     @if(Auth::user()->role == 'admin')
                         <div class="profile-cat">
-                            <a href="#" onclick="loadView('cv')">
+                            <a href="#" onclick="loadView(event, 'cv')">
                                 <h5 >CV</h5>
                             </a>      
                             <div class="bottom-bor"></div>                 
                         </div>
                         <div class="profile-cat">
-                            <a href="#" onclick="loadView('jobIndex')">
+                            <a href="#" onclick="loadView(event, 'jobIndex')">
                                 <h5 >Job</h5>
                             </a>    
                             <div class="bottom-bor"></div>                   
                         </div>
                         <div class="profile-cat">
-                            <a href="#" onclick="loadView('buyCoin')">
+                            <a href="#" onclick="loadView(event, 'buyCoin')">
                                 <h5 >Buy G Coin</h5>
+                            </a>      
+                            <div class="bottom-bor"></div>                 
+                        </div>
+                        <div class="profile-cat">
+                            <a href="#" onclick="loadView(event, 'buySlot')">
+                                <h5>Buy Slot</h5>
                             </a>      
                             <div class="bottom-bor"></div>                 
                         </div>
                     @elseif(Auth::user()->role == 'company')
                         <div class="profile-cat">
-                            <a href="#" onclick="loadView('jobIndex')">
+                            <a href="#" onclick="loadView(event, 'jobIndex')">
                                 <h5 >Job</h5>
                             </a>    
                             <div class="bottom-bor"></div>                   
                         </div>
                         <div class="profile-cat">
-                            <a href="#" onclick="loadView('buyCoin')">
+                            <a href="#" onclick="loadView(event, 'buyCoin')">
                                 <h5>Buy G Coin</h5>
+                            </a>      
+                            <div class="bottom-bor"></div>                 
+                        </div>
+                        <div class="profile-cat">
+                            <a href="#" onclick="loadView(event, 'buySlot')">
+                                <h5>Buy Slot</h5>
                             </a>      
                             <div class="bottom-bor"></div>                 
                         </div>
                     @else
                         <div class="profile-cat">
-                            <a href="#" onclick="loadView('cv')">
+                            <a href="#" onclick="loadView(event, 'cv')">
                                 <h5 >CV</h5>
                             </a>      
                             <div class="bottom-bor"></div>                 
                         </div>
                     @endif
                     <div class="profile-cat">
-                        <a href="#" onclick="loadView('application')">
+                        <a href="#" onclick="loadView(event, 'application')">
                             <h5 >{{Auth::user()->role == 'employee' ? 'Job Applied' : 'Application'}}</h5>
                         </a>    
                         <div class="bottom-bor"></div>                   
                     </div>
                     <div class="profile-cat">
-                        <a href="#" onclick="loadView('changePass')">
+                        <a href="#" onclick="loadView(event, 'changePass')">
                             <h5 >Change email/password</h5>
                         </a>      
                         <div class="bottom-bor"></div>                 
@@ -99,25 +119,47 @@
 </section>
 
 <script>
-    function loadView(view) {
-            // Gọi AJAX
-            $.ajax({
-                url: `/profile/${view}`,
-                method: 'GET',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    $('#profileContent').html(response);
-                    // Cập nhật trạng thái tab
-                    // $('.tab-button').removeClass('active');
-                    // $(`button:contains('${view}')`).addClass('active');
-                },
-                error: function(xhr) {
-                    $('#profile-content').html('<p>Lỗi khi tải dữ liệu</p>');
-                }
-            });
-        }
+
+    function loadView(event, view) {
+        event.preventDefault(); // Ngăn trang nhảy lên đầu
+        const scrollPosition = $(window).scrollTop(); // Lưu vị trí cuộn hiện tại
+
+        $.ajax({
+            url: `/profile/${view}`,
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                $('#profileContent').html(response);
+                $(window).scrollTop(scrollPosition); // Khôi phục vị trí cuộn
+            },
+            error: function(xhr) {
+                $('#profileContent').html('<p>Lỗi khi tải dữ liệu</p>');
+            }
+        });
+    }
+
+    // function loadView(view) {
+    //         const scrollPosition = $(window).scrollTop();
+    //         // Gọi AJAX
+    //         $.ajax({
+    //             url: `/profile/${view}`,
+    //             method: 'GET',
+    //             headers: {
+    //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //             },
+    //             success: function(response) {
+    //                 $('#profileContent').html(response);
+    //                 // Cập nhật trạng thái tab
+    //                 // $('.tab-button').removeClass('active');
+    //                 // $(`button:contains('${view}')`).addClass('active');
+    //             },
+    //             error: function(xhr) {
+    //                 $('#profile-content').html('<p>Lỗi khi tải dữ liệu</p>');
+    //             }
+    //         });
+    //     }
 
     function edit() {
         // Ẩn form 2

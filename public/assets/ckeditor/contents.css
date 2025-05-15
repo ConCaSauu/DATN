@@ -206,3 +206,10 @@ a > img {
 	max-height: 1080px;
 	margin:0 auto;
 }
+.quicksand-font {
+    font-family: 'Quicksand', sans-serif;
+}
+body, .quicksand-font {
+    font-family: 'Quicksand', sans-serif !important;
+	font-size: 16px !important;
+}

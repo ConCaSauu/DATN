@@ -52,9 +52,9 @@
                         <td>{{$user->logo}}</td>
                         <td>{{$user->city}}</td>
                         <td>
-                            @if ($user->status=='Active')
+                            @if ($user->status=='active')
                                 <span class="text text-success">Active</span>
-                            @elseif($user->status=='Pending')
+                            @elseif($user->status=='pending')
                                 <span class="text text-danger">Pending</span>
                             @else
                                 <span class="text text-danger">Lock</span>
@@ -62,17 +62,14 @@
                         </td>
                         <td>{{$user->created_at}}</td>
                         <td>{{$user->updated_at}}</td>
-                        <td>
-                            
-                            <a href="{{route('job.edit', $user->id)}}" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-                            
-                            <form onsubmit="return confirm('Do you want to delete this category?');" action="{{route('job.destroy',$user)}}" method="POST">
-                                @method('DELETE')
-                                @csrf
-                                
-                                <button type="submit" class="btn btn-danger" value=""><i class="fa-solid fa-trash"></i> Delete</button>  
-                            </form>
-                            
+                        <td style="display: flex">
+                            <a style="flex: 1" href="{{route('job.edit', $user->id)}}"><i class="fa-solid fa-pen-to-square"></i> </a>
+                            @if ($user->status == 'active')
+                                <a href="{{route('user.lock',$user)}}" style="flex: 1" onclick="lockUserWithConfirmation(event)"><i style="color: red" class="fa-solid fa-lock"></i> </a>  
+                            @elseif($user->status == 'lock')
+                                <a href="{{route('user.unlock',$user)}}" style="flex: 1" onclick="unlockUserWithConfirmation(event)"><i style="color: green" class="fa-solid fa-key"></i> </a>  
+                            @else
+                            @endif
                         </td>
                     </tr>
                     @empty
@@ -83,7 +80,22 @@
         </div>
     </div>
 </div>
-
+<script>
+    function lockUserWithConfirmation(event) {
+            
+        const confirmed = confirm('Are you sure you want to lock this User?');
+        if(!confirmed) {
+            event.preventDefault(); // prevent default link behavior
+        }
+    }
+    function unlockUserWithConfirmation(event) {
+        
+        const confirmed = confirm('Are you sure you want to unlock this User?');
+        if(!confirmed) {
+            event.preventDefault(); // prevent default link behavior
+        }
+    }
+</script>
 @endsection
 
 {{--  

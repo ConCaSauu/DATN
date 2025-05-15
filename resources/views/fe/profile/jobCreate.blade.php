@@ -8,6 +8,7 @@
                 <label>Name</label>
                 <input type="text" name="name" placeholder="Enter your Job name" >
             </div>
+            <input type="hidden" name="com_name" value="{{Auth::user()->name}}">
             <div class="col-lg-6 bb-register-wrap bb-register-width-50 margin-bot-10">
                 <label>Expired Date</label>
                 <input type="date" name="exp_date">
@@ -15,7 +16,7 @@
             <div class="col-lg-6 bb-register-wrap bb-register-width-50 margin-bot-10">
                 <label>Category</label>
                 <div style="border: 1px solid #eeeeee; border-radius: 10px; padding: 12px;">
-                    <select name="category" id="select-category" style="display: block; width: -webkit-fill-available;">
+                    <select name="cid" id="select-category" style="display: block; width: -webkit-fill-available;">
                         @foreach ($categories as $item) 
                             <option value="{{$item->id}}">{{$item->name}}</option>
                         @endforeach
@@ -33,7 +34,7 @@
             </div>
             <div class="bb-register-wrap bb-register-width-50 margin-bot-10">
                 <label>Description</label>
-                <textarea id="description" name="description" placeholder="Enter your job description"></textarea>
+                <textarea id="description" name="description" placeholder="Enter your job description" style="height: 270px"></textarea>
             </div>
             <div class="col-lg-6 bb-register-wrap bb-register-width-50 margin-bot-10">
                 <label>Salary Min (million VND)</label>

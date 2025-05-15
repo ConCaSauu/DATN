@@ -12,7 +12,7 @@
                         <h5><a href="javascript:void(0)" style="font-family: quicksand">Người thuộc cung Song Ngư làm nghề gì hợp nhất?</a></h5>
                         <p style="font-family: quicksand">Song Ngư là một trong những cung hoàng đạo thú vị và đầy bí ẩn trong hệ thống 12 cung hoàng đạo. Trong bài viết hôm nay, GoodJob sẽ giới thiệu đến bạn đọc đặc điểm nổi bật của những người thuộc cung Song Ngư.</p>
                         <div class="blog-btn">
-                            <a href="{{route('newDetail',['id'=> 1])}}" class="bb-btn-2">Read More</a>
+                            <a href="{{route('newDetail',['id'=> 2])}}" class="bb-btn-2">Read More</a>
                         </div>
                     </div>
                 </div>

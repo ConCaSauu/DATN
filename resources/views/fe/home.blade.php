@@ -1374,7 +1374,7 @@
                                     <a href="javascript:void(0)" class="bb-vendor-init">
                                         <i class="ri-arrow-right-up-line"></i>
                                     </a>
-                                    <img src="{{asset('fe/assets')}}/img/vendors/img-1.jpg" alt="vendors-img-1">
+                                    <img src="{{asset('upload/images')}}/fpt1.jpg" alt="vendors-img-1">
                                     <div class="vendors-local-shape">
                                         <div class="inner-shape"></div>
                                         <img src="{{asset('fe/assets')}}/img/vendors/vendor-1.jpg" alt="vendor">
@@ -1611,7 +1611,7 @@
         </section>
     
         <!-- Instagram -->
-        <section class="section-instagram padding-tb-50">
+        {{-- <section class="section-instagram padding-tb-50">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
@@ -1665,5 +1665,5 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> --}}
 @endsection

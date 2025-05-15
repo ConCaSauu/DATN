@@ -55,7 +55,29 @@
             </li>
           </ul>
         </li>
-
+        <li class="nav-item {{Request::segment(2) == 'application' ? 'menu-is-opening menu-open' : ''}}">
+          <a href="" class="nav-link">
+            <i class="fa-solid fa-layer-group"></i>
+            <p>
+              Applications
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{route('application.index')}}" class="nav-link">
+                <i class="fa-sharp-duotone fa-solid fa-list"></i>
+                <p>List</p>
+              </a>
+            </li>
+            {{-- <li class="nav-item">
+              <a href="{{route('job.create')}}" class="nav-link">
+                <i class="fa-solid fa-folder-plus"></i>
+                <p>Create</p>
+              </a>
+            </li> --}}
+          </ul>
+        </li>
         <li class="nav-item {{Request::segment(2) == 'job' ? 'menu-is-opening menu-open' : ''}}">
           <a href="" class="nav-link">
             <i class="fa-solid fa-layer-group"></i>
@@ -71,12 +93,12 @@
                 <p>List</p>
               </a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
               <a href="{{route('job.create')}}" class="nav-link">
                 <i class="fa-solid fa-folder-plus"></i>
                 <p>Create</p>
               </a>
-            </li>
+            </li> --}}
           </ul>
         </li>
         <li class="nav-item {{Request::segment(2) == 'new' ? 'menu-is-opening menu-open' : ''}}">

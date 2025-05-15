@@ -92,6 +92,7 @@ class NewController extends Controller
     public function newDetail(string $id){
         $new = News::find($id);
         $news = News::all();
+        
         return view('fe.newDetail',compact('new','news'));
     }
 }
